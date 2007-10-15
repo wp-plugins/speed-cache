@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Speed-Cache
-Plugin URI: http://dev.lipidity.com/wordpress/speed-cache
+Plugin URI: http://lipidity.com/web/wordpress/speed-cache/
 Description: Mirror external files locally to deliver huge speed boosts to your site
 Version: 0.1
 Author: Ankur Kothari
-Author URI: http://dev.lipidity.com
+Author URI: http://lipidity.com
 */
 
 class speedy
@@ -122,7 +122,7 @@ echo '">Upd</a></td>
 		<input type="submit" name="sc_force" value="Save / Update" />
 		</p></form>';
 		echo '</div>';
-		echo '<div class="wrap">Want to know more? Need assistance? Visit the <a href="http://dev.lipidity.com/wordpress/speed-cache">Speed Cache</a> homepage.</div>';
+		echo '<div class="wrap">Want to know more? Need assistance? Visit the <a href="http://lipidity.com/web/wordpress/speed-cache/">Speed Cache</a> homepage.</div>';
 	}
 
 	function speed_cache($singleid = false, $resync_options = true){
@@ -141,10 +141,9 @@ echo '">Upd</a></td>
 	function _check($key, $info, $force=false){
 		$rnow = time();
 		if( $force || ($rnow-$info[0]) > ($info[3]*86400) ){
-			echo $script_url; echo ' '; // todo: remove out for release
 			$script_url = trim($info[1]);
 			$local_path = preg_replace('#[^a-zA-Z0-9_\-\/\.]#i','',$info[2]);
-//			$local_path = preg_replace('#\.{2,}#','', $local_path); // todo: uncomment for release
+			$local_path = preg_replace('#\.{2,}#','', $local_path);
 			if($local_path{0} == '/') $local_path = substr($local_path, 1);
 			if( !isset($local_path{2}) ){
 				$this->options[$key][5] = 'Path too short';
@@ -164,7 +163,7 @@ echo '">Upd</a></td>
 			} else {
 				$this->options[$key][5] = $failure;
 				if($this->debug && !$force)
-					echo '<div class="wrap">The Speed Cache plugin FAILED to mirror the URL "'.$script_url.'" to the path "'.ABSPATH.$local_path.'" on your WordPress blog. The attempt was made on the '.date('jS \of F, Y \a\t H:i').'.<br />Another attempt will be made in '.$info[3].' days.</div>';//'<div id="message" class="updated fade"><p>Your settings have been saved!</p></div>'
+					echo '<div class="wrap">The Speed Cache plugin FAILED to mirror the URL "'.$script_url.'" to the path "'.ABSPATH.$local_path.'" on your WordPress blog. The attempt was made on the '.date('jS \of F, Y \a\t H:i').'.<br />Another attempt will be made in '.$info[3].' days.</div>';
 				elseif(get_option('sc_notify_err'))
 					@wp_mail(get_option('admin_email'), 'Speed Cache Failed', 'The Speed Cache plugin FAILED to  mirror the URL "'.$script_url.'" to the path "'.$local_path.'" on your WordPress blog. The attempt was made on the '.date('jS \of F, Y \a\t H:i').'.\nAnother attempt will be made in '.$info[3].' days.');
 			}
